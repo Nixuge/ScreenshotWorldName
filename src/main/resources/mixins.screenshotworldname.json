@@ -1,0 +1,10 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "me.nixuge.screenshotworldname.mixins",
+  "refmap": "refmap.screenshotworldname.json",
+  "mixins": [],
+  "client": [
+    "util.ScreenShotHelperMixin"
+  ],
+  "server": []
+}
