@@ -5,7 +5,7 @@
   "description": "${mod_description}",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://github.com/Nixuge/ScreenshotWorldName",
+  "url": "${mod_url}",
   "updateUrl": "",
   "authorList": ${mod_author},
   "credits": "",

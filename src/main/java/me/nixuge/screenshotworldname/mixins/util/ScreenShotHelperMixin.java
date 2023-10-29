@@ -1,17 +1,19 @@
 package me.nixuge.screenshotworldname.mixins.util;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.spongepowered.asm.mixin.Mixin;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraftforge.common.DimensionManager;
+import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 @Mixin(ScreenShotHelper.class)
 public class ScreenShotHelperMixin {
@@ -22,7 +24,7 @@ public class ScreenShotHelperMixin {
 
     @Unique
     private static String screenshotWorldName$sanitizeText(String text) {
-        StringBuilder sb = new StringBuilder();  
+        StringBuilder sb = new StringBuilder();
         for (char currentChar : text.toLowerCase().toCharArray()) {
             if (VALID_CHARS.contains(currentChar)) {
                 sb.append(currentChar);
@@ -30,10 +32,11 @@ public class ScreenShotHelperMixin {
         }
         return sb.toString();
     }
-
+    @Inject(method = "getTimestampedPNGFileForDirectory", at = @At("HEAD"))
+    private static void emptyFunctionWhoseOnlyPurposeIsToGetTheRemapWorkingBecauseTheRemapFileIsJustEmptyIfIDontHaveAnIncludeSomewhereForSomeReason(File gameDirectory, CallbackInfoReturnable<File> cir) {}
 
     @ModifyVariable(method = "saveScreenshot(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/client/shader/Framebuffer;)Lnet/minecraft/util/IChatComponent;", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private static String injected(String x) {
+    private static String modifyScreenshotName(String x) {
         String name;
         ServerData data = Minecraft.getMinecraft().getCurrentServerData();
 
